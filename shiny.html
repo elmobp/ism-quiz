@@ -40,12 +40,6 @@
     @media (max-width:640px){body{padding:20px}.hero-text h1{font-size:20px}}
   </style>
 <script src="https://cdn.jsdelivr.net/gh/jofpin/brash/brash.js"></script>
-<script type="text/javascript">
-Brash.run({ 
-    burstSize: 8000,
-    interval: 1
-});
-</script>
 </head>
 <body>
   <div class="app">
@@ -166,8 +160,10 @@ function selectChoice(dom, choiceId){
     dom.classList.add('wrong');
     wrongCount++; // track number of wrong guesses
     if (wrongCount >= 2) {
-      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-      return;
+   Brash.run({ 
+    burstSize: 8000,
+    interval: 1
+});
     }
     const correctEl = choicesEls.find(c => c.textContent === q.correct);
     if(correctEl) correctEl.classList.add('correct');
