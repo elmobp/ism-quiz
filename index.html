@@ -144,26 +144,30 @@
       el('next-btn').disabled = true;
     }
 
-    function selectChoice(dom, choiceId){
-      // prevent double select
-      if(el('next-btn').disabled === false) return;
-      const q = questions[current];
-      const choicesEls = Array.from(document.querySelectorAll('.choice'));
-      choicesEls.forEach(c => c.style.pointerEvents = 'none');
+let wrongCount = 0; // <-- add this near top of script
 
-      if(choiceId === q.correct){
-        dom.classList.add('correct');
-        score += 1;
-      } else {
-        dom.classList.add('wrong');
-        // mark correct
-        const correctEl = choicesEls.find(c => c.textContent === q.correct);
-        if(correctEl) correctEl.classList.add('correct');
-      }
-      el('score-mini').textContent = `Score: ${score}`;
-      el('next-btn').disabled = false;
+function selectChoice(dom, choiceId){
+  if(el('next-btn').disabled === false) return;
+  const q = questions[current];
+  const choicesEls = Array.from(document.querySelectorAll('.choice'));
+  choicesEls.forEach(c => c.style.pointerEvents = 'none');
+
+  if(choiceId === q.correct){
+    dom.classList.add('correct');
+    score += 1;
+  } else {
+    dom.classList.add('wrong');
+    wrongCount++; // track number of wrong guesses
+    if (wrongCount >= 2) {
+      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      return;
     }
-
+    const correctEl = choicesEls.find(c => c.textContent === q.correct);
+    if(correctEl) correctEl.classList.add('correct');
+  }
+  el('score-mini').textContent = `Score: ${score}`;
+  el('next-btn').disabled = false;
+}
     function updateProgress(){
       const pct = Math.round((current / Math.max(1, questions.length)) * 100);
       el('progress-bar').style.width = pct + '%';
